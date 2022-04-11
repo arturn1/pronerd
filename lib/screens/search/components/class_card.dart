@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,14 +49,13 @@ class ClassesCard extends StatelessWidget {
             height: 120,
             width: double.infinity,
             decoration: BoxDecoration(
-              border: Border.all(
-                color: kOnPrimaryColorContainer10
-              ),
+              border: Border.all(color: kOnPrimaryColorContainer10),
               color: kPrimaryColorContainer90,
               borderRadius: BorderRadius.circular(15),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -65,7 +65,7 @@ class ClassesCard extends StatelessWidget {
                       //   color:kOnPrimaryColorContainer10,
                       // ),
                       borderRadius: BorderRadius.circular(15),
-                    color: kPrimarySurface,
+                      color: kPrimarySurface,
                     ),
                     height: 35,
                     width: double.infinity,
@@ -75,8 +75,7 @@ class ClassesCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         style: TextStyle(
-                            color: kOnPrimaryColorContainer10,
-                            fontSize: 20),
+                            color: kOnPrimaryColorContainer10, fontSize: 20),
                       ),
                     ),
                   ),
@@ -84,20 +83,20 @@ class ClassesCard extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                   'Criado por:  ',
+                    'Criado por:  ',
                     style: TextStyle(
-                        color: kOnPrimaryColorContainer10,
-                        fontSize: 16),
+                        color: kOnPrimaryColorContainer10, fontSize: 16),
                   ),
-                  Text(
-                   roomModel.userName,
+                  AutoSizeText(
+                    roomModel.userName,
+                    minFontSize: 10,
                     style: TextStyle(
                         color: kOnPrimaryColorContainer10,
-                        fontSize: pixelDevice == 3 ? 14 : 20),
+                    ),
                   ),
                   const Spacer(),
                   Container(
-                    margin: const EdgeInsets.only(bottom: kMarginDefault/2),
+                    margin: const EdgeInsets.only(bottom: kMarginDefault / 2),
                     height: 40,
                     width: 80,
                     child: OverflowView.flexible(
@@ -119,7 +118,7 @@ class ClassesCard extends StatelessWidget {
                                   height: 30,
                                   child: GFLoader(
                                     type: GFLoaderType.custom,
-                                    loaderIconOne   : Icon(Icons.insert_emoticon),
+                                    loaderIconOne: Icon(Icons.insert_emoticon),
                                   ));
                             },
                           ),
@@ -135,7 +134,8 @@ class ClassesCard extends StatelessWidget {
                           child: Center(
                               child: Text(
                             '+$remaining',
-                            style: TextStyle(color: kOnSecondaryColorContainer10),
+                            style:
+                                TextStyle(color: kOnSecondaryColorContainer10),
                           )),
                         );
                       },
