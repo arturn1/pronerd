@@ -13,6 +13,7 @@ import 'package:pronerd/utils/constants.dart';
 import '../components/bottomDrawer.dart';
 import '../controller/class_controller.dart';
 import '../controller/drop_down_controller.dart';
+import '../controller/post_controller.dart';
 import '../controller/profile_controller.dart';
 import '../controller/task_controller.dart';
 import '../components/build_custom_appBar.dart';
@@ -28,6 +29,7 @@ class BaseScreen extends GetView {
     ProfileController profileController = Get.put(ProfileController());
     DropDownController dropDownController = Get.put(DropDownController());
     ClassController classController = Get.put(ClassController());
+    PostController postController = Get.put(PostController());
 
     return Scaffold(
       backgroundColor: kPrimarySurface,
