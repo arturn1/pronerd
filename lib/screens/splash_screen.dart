@@ -7,6 +7,7 @@ import 'package:rive/rive.dart';
 
 import '../controller/class_controller.dart';
 import '../controller/drop_down_controller.dart';
+import '../controller/task_controller.dart';
 import 'login/login_screen.dart';
 
 class AwesomeController extends GetxController {

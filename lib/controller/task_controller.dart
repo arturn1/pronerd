@@ -10,7 +10,6 @@ import 'package:uuid/uuid.dart';
 
 import '../components/build_snack_bar.dart';
 import '../models/room.dart';
-import '../screens/task/task_screen.dart';
 import 'auth_controller.dart';
 import 'class_controller.dart';
 
@@ -175,15 +174,15 @@ class TaskController extends GetxController {
     String res = "Some error occurred";
     try {
       await firestore.collection('tasks').doc(taskId).delete();
-      res = 'Entrega excluida com sucesso';
+      res = 'Entrega concluída com sucesso';
       updateList();
+      return CustomSnack().buildCardSuccess(res.toString());
     } catch (err) {
       //return CustomSnack().buildCardError(res.toString());
     }
-    //return CustomSnack().buildCardSuccess(res.toString());
   }
 
-  Future<void> updateHome() async {
+  Future updateHome() async {
     postController.onFollow();
     onFollow();
   }

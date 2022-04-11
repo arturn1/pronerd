@@ -6,12 +6,15 @@ import 'package:pronerd/components/build_btn.dart';
 import 'package:pronerd/controller/date_picker_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
 
+import '../controller/post_controller.dart';
 import '../controller/task_controller.dart';
 import '../utils/constants.dart';
+import 'build_snack_bar.dart';
 
 class CustomModal {
   final TaskController controller = Get.find();
   final DateController dateController = Get.find();
+  PostController postController = Get.find();
 
   buildModal(String message, BuildContext context) {
     return SingleChildScrollView(
@@ -87,8 +90,10 @@ class CustomModal {
                 ),
                 CustomBtn(
                     text: 'Salvar',
-                    function: () =>
-                        controller.addTask().then((value) => Get.back()))
+                    function: () => controller.className.isNotEmpty ?
+                        controller.addTask().then((value) => Get.back()) :
+                    CustomSnack().buildCardError('Selecione um grupo'),
+                )
               ],
             ),
           ),
