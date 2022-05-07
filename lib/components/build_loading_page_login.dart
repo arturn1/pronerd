@@ -21,9 +21,6 @@ class CustomLoaderLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // AuthController auth = Get.find();
-    // DropDownController dropDownController = Get.put(DropDownController());
-    // ClassController classController = Get.put(ClassController());
 
     return Container(
         color: Colors.white,

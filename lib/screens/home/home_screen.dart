@@ -11,10 +11,7 @@ import 'components/task/build_task_home.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  Future onPageCalled(GetPage page) {
-    final taskController = Get.find<TaskController>();
-    return taskController.updateHome();
-  }
+
   @override
   Widget build(BuildContext context) {
 

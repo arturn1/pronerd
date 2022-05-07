@@ -20,8 +20,6 @@ class BuildClassHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthController auth = Get.find();
-    SearchController search = Get.put(SearchController());
-    ProfileController profileController = Get.find();
 
     return Container(
       padding : const EdgeInsets.only(top: kMarginDefault*1.5),

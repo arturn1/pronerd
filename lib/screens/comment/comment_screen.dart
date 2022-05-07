@@ -15,7 +15,7 @@ class CommentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CommentController commentController = Get.put(CommentController());
+    CommentController commentController = Get.find();
     AuthController authController = Get.find();
 
     return Scaffold(

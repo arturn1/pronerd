@@ -32,8 +32,6 @@ class AwesomeController extends GetxController {
       });
     } else {
       Future.delayed(const Duration(milliseconds: 1500), () {
-        DropDownController dropDownController = Get.put(DropDownController());
-        ClassController classController = Get.put(ClassController());
         Get.offAll(
           () => const BaseScreen()
         );

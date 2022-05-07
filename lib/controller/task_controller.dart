@@ -16,8 +16,8 @@ import 'class_controller.dart';
 class TaskController extends GetxController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>(debugLabel: '_screenkey');
   DateController dateController = Get.put(DateController());
-  DropDownController dropdownController = Get.find();
-  ClassController classController = Get.find();
+  DropDownController dropdownController = Get.put(DropDownController());
+  ClassController classController = Get.put(ClassController());
   AuthController auth = Get.find();
   PostController postController = Get.put(PostController());
 
@@ -26,7 +26,6 @@ class TaskController extends GetxController {
   void onInit() {
     super.onInit();
     taskList.bindStream(taskStream()); //stream coming from firebase
-    //filteredTaskList.value = taskListByClassFromUser;
   }
 
   @override

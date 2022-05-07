@@ -19,7 +19,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController auth = Get.find();
-    final ProfileController profileController = Get.find();
 
     return SafeArea(
       child: PreferredSize(

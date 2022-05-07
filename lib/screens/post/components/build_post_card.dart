@@ -15,15 +15,14 @@ import '../../profile/detailed_profile_screen.dart';
 import '../../task/task_screen.dart';
 
 class PostCard extends StatelessWidget {
-  PostModel snap;
+  const PostCard({required this.snap, Key? key}) : super(key: key);
 
-  PostCard({required this.snap, Key? key}) : super(key: key);
+  final PostModel snap;
 
   @override
   Widget build(BuildContext context) {
-    ProfileController profileController = Get.put(ProfileController());
+    ProfileController profileController = Get.find();
     CommentController commentController = Get.put(CommentController());
-    // TaskController taskController = Get.find();
     DateController dateController = Get.find();
 
     return Container(

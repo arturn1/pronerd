@@ -25,7 +25,6 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CommentController commentController = Get.put(CommentController());
-    TaskController taskController = Get.find();
     ProfileController profileController = Get.put(ProfileController());
 
     return Container(

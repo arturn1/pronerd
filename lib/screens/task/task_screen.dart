@@ -22,7 +22,7 @@ class TaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController auth = Get.find();
-    final SearchController searchController = Get.find();
+    final SearchController searchController = Get.put(SearchController());
     final TaskController taskController = Get.find();
 
     return Scaffold(
