@@ -30,7 +30,7 @@ class TaskController extends GetxController {
 
   @override
   void onReady() {
-    _taskListByClassFromUser.bindStream(taskStreamByClassFromUserT());
+    taskListByClassFromUser.bindStream(taskStreamByClassFromUserT());
   }
 
   Future<void> onClick(String snap) async {
@@ -39,20 +39,20 @@ class TaskController extends GetxController {
   }
 
   Future<void> onFollow() async {
-    _taskListByClassFromUser.bindStream(taskStreamByClassFromUserT());
+    taskListByClassFromUser.bindStream(taskStreamByClassFromUserT());
 
   }
 
   Rx<List<TaskModel>> taskList = Rx<List<TaskModel>>([]);
   Rx<List<TaskModel>> taskListByClass = Rx<List<TaskModel>>([]);
-  final Rx<List<TaskModel>> _taskListByClassFromUser = Rx<List<TaskModel>>([]);
+  final Rx<List<TaskModel>> taskListByClassFromUser = Rx<List<TaskModel>>([]);
 
 
   final Rx<List<TaskModel>> filteredTaskList = Rx<List<TaskModel>>([]);
   final Rx<List<TaskModel>> taskListNew = Rx<List<TaskModel>>([]);
 
 
-  List<TaskModel> get taskListByClassFromUser => _taskListByClassFromUser.value;
+  List<TaskModel> get getTaskListByClassFromUser => taskListByClassFromUser.value;
 
   final RxString _classId = "".obs;
   final RxString _className = "".obs;
@@ -187,15 +187,15 @@ class TaskController extends GetxController {
   }
 
   updateList()  {
-    filteredTaskList.value = taskListByClassFromUser;
+    filteredTaskList.value = getTaskListByClassFromUser;
   }
 
   void runFilter(String enteredKeyword) {
     List<TaskModel> results = [];
     if (enteredKeyword.isEmpty) {
-      results = taskListByClassFromUser;
+      results = getTaskListByClassFromUser;
     } else {
-      results = taskListByClassFromUser
+      results = getTaskListByClassFromUser
           .where((task) =>
           task.description
               .toLowerCase()

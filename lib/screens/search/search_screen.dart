@@ -21,7 +21,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SearchController searchController = Get.find();
+    SearchController searchController = Get.put(SearchController());
 
     return Scaffold(
       appBar: const CustomAppBar(),

@@ -123,7 +123,7 @@ class PostCard extends StatelessWidget {
                           commentController.onClick(snap).then(
                               (v) => Get.to(() => CommentsScreen(snap: snap)))
                         },
-                    label: Text(snap.commentLenght.toString())),
+                    label: Text(snap.commentLength.toString())),
               ),
               // SizedBox(
               //   // margin: const EdgeInsets.only(left: kMarginDefault/10),

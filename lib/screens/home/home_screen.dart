@@ -5,7 +5,7 @@ import '../../components/build_search_field.dart';
 import '../../controller/task_controller.dart';
 import '../../utils/constants.dart';
 import 'components/classes/build_classes.dart';
-import 'components/post/build_feed.dart';
+import 'components/post/build_post_home.dart';
 import 'components/task/build_task_home.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -21,11 +21,9 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: const [
-            // const SearchField(),
             BuildClassHome(),
             BuildTaskHome(),
-            BuildFeedHome(),
-            //const MyBuildFeed(),
+            BuildPostHome(),
           ],
         ),
       ),

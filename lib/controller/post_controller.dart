@@ -37,7 +37,7 @@ class PostController extends GetxController
   final RxString _description = ''.obs;
   final RxString _classId = ''.obs;
   final RxString _className = ''.obs;
-  final RxInt _commentLenght = 0.obs;
+  final RxInt _commentLength = 0.obs;
 
   String get className => _className.value;
 
@@ -47,9 +47,9 @@ class PostController extends GetxController
 
   setClassName(value) => _className.value = value;
 
-  setCommentLenght(v) => _commentLenght.value = v;
+  setCommentLength(v) => _commentLength.value = v;
 
-  int get commentLenght => _commentLenght.value;
+  int get commentLength => _commentLength.value;
 
   Future<void> onClick(String snap) async {
     postListByClass.bindStream(postStreamByClass(snap));
@@ -65,7 +65,7 @@ class PostController extends GetxController
       String postId = const Uuid().v1(); // creates unique id based on time
       PostModel post = PostModel(
           postId: postId,
-          commentLenght: 0,
+          commentLength: 0,
           description: _description.value,
           uid: auth.user.uid,
           userName: auth.user.displayName!,

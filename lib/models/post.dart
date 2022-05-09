@@ -4,7 +4,7 @@ class PostModel {
   final String postId;
   final String description;
   final String uid;
-  final int commentLenght;
+  final int commentLength;
   final String classId;
   final String className;
   final String userName;
@@ -14,7 +14,7 @@ class PostModel {
 
   const PostModel(
       {
-        required this.commentLenght,
+        required this.commentLength,
         required this.classId,
         required this.className,
         required this.postId,
@@ -30,7 +30,7 @@ class PostModel {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return PostModel(
-        commentLenght: snapshot["commentLenght"],
+        commentLength: snapshot["commentLength"],
         classId: snapshot["classId"],
         className: snapshot["className"],
         uid: snapshot["uid"],
@@ -47,7 +47,7 @@ class PostModel {
     "classId": classId,
     "className": className,
     "uid": uid,
-    "commentLenght": commentLenght,
+    "commentLength": commentLength,
     "description": description,
     "userName": userName,
     "postId": postId,

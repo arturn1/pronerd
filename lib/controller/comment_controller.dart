@@ -56,7 +56,7 @@ class CommentController extends GetxController {
         DocumentSnapshot doc =
         await firestore.collection('posts').doc(snap.postId).get();
         await firestore.collection('posts').doc(snap.postId).update({
-          'commentLenght': (doc.data()! as dynamic)['commentLenght'] + 1,
+          'commentLength': (doc.data()! as dynamic)['commentLength'] + 1,
         });
         //CustomSnack().buildCardSuccess(res);
 

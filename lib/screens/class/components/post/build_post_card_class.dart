@@ -118,7 +118,7 @@ class PostCardClass extends StatelessWidget {
                     .onClick(snap)
                     .then((v) => Get.to(() => CommentsScreen(snap: snap)))
               },
-              label: Text(snap.commentLenght.toString()),
+              label: Text(snap.commentLength.toString()),
             ),
           ),
         ),

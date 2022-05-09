@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
 
@@ -15,8 +17,8 @@ class BuildTaskHome extends StatefulWidget {
   State<BuildTaskHome> createState() => _BuildTaskHomeState();
 }
 
-class _BuildTaskHomeState extends State<BuildTaskHome> with TickerProviderStateMixin {
-
+class _BuildTaskHomeState extends State<BuildTaskHome>
+    with TickerProviderStateMixin {
   late final AnimationController animationController;
 
   @override
@@ -34,6 +36,7 @@ class _BuildTaskHomeState extends State<BuildTaskHome> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    TaskController taskController = Get.find();
     AuthController auth = Get.find();
 
     return SizedBox(
@@ -46,91 +49,80 @@ class _BuildTaskHomeState extends State<BuildTaskHome> with TickerProviderStateM
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // Icon(
-                //   FontAwesomeIcons.caretLeft,
-                //   size: 20,
-                //   color: kOnPrimaryColorContainer10,
-                // ),
                 const Text(
                   'Próximas entregas',
                   style: kLabelHeadStyle,
                 ),
                 Icon(
-                 FontAwesomeIcons.caretRight,
+                  FontAwesomeIcons.caretRight,
                   size: 20,
                   color: kOnPrimaryColorContainer10,
                 )
               ],
             ),
           ),
-          GetX<TaskController>(
-              init: Get.put<TaskController>(TaskController()),
-              builder: (TaskController taskController) {
-                return SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount:
-                    taskController.taskListByClassFromUser.isEmpty
-                        ? 1
-                        : taskController.taskListByClassFromUser.length,
-                    itemBuilder: (_, index) {
+          StreamBuilder<List<TaskModel>>(
+              stream: taskController.taskListByClassFromUser.stream,
+              builder: (_, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (!snapshot.hasData) {
+                    taskController.taskListByClassFromUser
+                        .bindStream(taskController.taskStreamByClassFromUser());
+                  }
+                  return const Center(
+                    child: GFLoader(
+                      type: GFLoaderType.android,
+                    ),
+                  );
+                }
 
-                      final int count = taskController.taskListByClassFromUser.isEmpty ?
-                          1 :taskController.taskListByClassFromUser.length;
+                if (snapshot.data!.isEmpty) {
+                  return const Center(child: Text("Sem entregas pendentes"));
+                }
 
-                      final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: animationController,
-                              curve:
-                              Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn,
-                              )));
+                if (snapshot.hasData) {
+                  return SizedBox(
+                      width: double.infinity,
+                      height: 100,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (_, index) {
+                            const int count = 1;
+                            final Animation<double> animation =
+                                Tween<double>(begin: 0.0, end: 1.0)
+                                    .animate(CurvedAnimation(
+                                        parent: animationController,
+                                        curve: Interval(
+                                          (1 / count) * index,
+                                          1.0,
+                                          curve: Curves.fastOutSlowIn,
+                                        )));
+                            animationController.forward();
 
-                      animationController.forward();
-
-
-                      return taskController.taskListByClassFromUser.isEmpty
-                          ? NextDeliveriesCard(
-                              uid: '0',
-                          animation: animation,
-                          animationController: animationController,
-                          taskModel: TaskModel(
-
-                                  finalDate: DateTime.now(),
-                                  description:
-                                      'Seja bem vindo!',
-                              taskId: '',
-                                  classId: '', className: 'Novo por aqui?!'))
-                          :
-                      // NextDeliveriesCard(
-                      //         uid: auth.user.uid,
-                      //     animation: animation,
-                      //     animationController: animationController,
-                      //     taskModel:
-                      //             taskController.taskListByClassFromUser.value[index])
-                      SizedBox(
-                        width: kWidthDefault,
-                        height: 100,
-                        child: PageView.builder(
-                            itemCount: taskController.taskListByClassFromUser.length,
-                            pageSnapping: true,
-                            itemBuilder: (context,index){
-                              return NextDeliveriesCard(
-                                  uid: auth.user.uid,
-                              animation: animation,
-                              animationController: animationController,
-                              taskModel:
-                                      taskController.taskListByClassFromUser[index]);}),
-                      )
-                      ;
-                    },
-                  ),
+                            return SizedBox(
+                              width: kWidthDefault,
+                              height: 100,
+                              child: PageView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  pageSnapping: true,
+                                  itemBuilder: (context, index) {
+                                    return NextDeliveriesCard(
+                                        uid: auth.user.uid,
+                                        animation: animation,
+                                        animationController:
+                                            animationController,
+                                        taskModel: snapshot.data![index]);
+                                  }),
+                            );
+                          }));
+                }
+                return Container(
+                  height: 50,
+                  color: Colors.yellow,
                 );
-              }),
+              })
         ],
       ),
     );
