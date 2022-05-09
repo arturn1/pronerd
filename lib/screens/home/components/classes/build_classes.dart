@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pronerd/components/build_btn.dart';
 import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/test.dart';
 
 import '../../../../components/build_add_room.dart';
@@ -19,7 +20,8 @@ class BuildClassHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthController auth = Get.find();
+
+    UserController userController = Get.find();
 
     return Container(
       padding : const EdgeInsets.only(top: kMarginDefault*1.5),
@@ -98,7 +100,7 @@ class BuildClassHome extends StatelessWidget {
                             ),
                           )
                         : ClassesCard(
-                            uid: auth.user.uid,
+                            uid:userController.userModel!.uid,
                             roomModel: classController
                                 .classListByUser.value[index - 1]),
                   ),

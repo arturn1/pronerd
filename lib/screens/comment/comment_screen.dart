@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/comment_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/post.dart';
 
 import '../../components/build_header.dart';
@@ -16,7 +17,8 @@ class CommentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CommentController commentController = Get.find();
-    AuthController authController = Get.find();
+    UserController userController = Get.find();
+
 
     return Scaffold(
       body: SafeArea(
@@ -67,7 +69,7 @@ class CommentsScreen extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(authController.user.photoURL!),
+                backgroundImage: NetworkImage(userController.userModel!.photoUrl),
                 radius: 18,
               ),
               Expanded(
@@ -79,7 +81,7 @@ class CommentsScreen extends StatelessWidget {
                       textCapitalization: TextCapitalization.sentences,
                       onChanged: (v) => commentController.setComment(v),
                       decoration: InputDecoration(
-                          hintText: '@${authController.user.displayName}',
+                          hintText: '@${userController.userModel!.userName}',
                           border: InputBorder.none),
                     ),
                   ),

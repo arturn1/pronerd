@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 
 import '../../../../../models/task.dart';
 import '../../../../utils/constants.dart';
-import '../../../home/components/task/build_card_task_home.dart';
 import 'build_task_card_class.dart';
 
 class BuildClassTasks extends StatefulWidget {
@@ -34,7 +33,8 @@ class _BuildClassTasksState extends State<BuildClassTasks>
 
   @override
   Widget build(BuildContext context) {
-    AuthController auth = Get.find();
+
+    UserController userController = Get.find();
 
     return SizedBox(
       height: 160,
@@ -93,7 +93,6 @@ class _BuildClassTasksState extends State<BuildClassTasks>
                       animationController.forward();
                       return taskController.taskListByClass.value.isEmpty
                           ? NextDeliveriesCardClass(
-                              uid: '0',
                               taskModel: TaskModel(
                                   finalDate: DateTime.now(),
                                   description:
@@ -105,7 +104,6 @@ class _BuildClassTasksState extends State<BuildClassTasks>
                               animationController: animationController,
                             )
                           : NextDeliveriesCardClass(
-                              uid: auth.user.uid,
                               taskModel:
                               taskController.taskListByClass.value[index],
                               animation: animation,

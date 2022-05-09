@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pronerd/controller/auth_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/utils/constants.dart';
 
 class ProfilePic extends StatelessWidget {
@@ -10,11 +11,12 @@ class ProfilePic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthController auth = Get.find();
+
+    UserController userController = Get.find();
 
     return CircleAvatar(
       radius: 60,
-      backgroundImage: NetworkImage(auth.user.photoURL!),
+      backgroundImage: NetworkImage(userController.userModel!.photoUrl),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
 
+import '../../../../controller/user_controller.dart';
 import '../../../../models/task.dart';
 import '../../../../utils/constants.dart';
 import 'build_card_task_home.dart';
@@ -37,7 +38,8 @@ class _BuildTaskHomeState extends State<BuildTaskHome>
   @override
   Widget build(BuildContext context) {
     TaskController taskController = Get.find();
-    AuthController auth = Get.find();
+    UserController userController = Get.find();
+
 
     return SizedBox(
       height: 170,
@@ -109,7 +111,7 @@ class _BuildTaskHomeState extends State<BuildTaskHome>
                                   pageSnapping: true,
                                   itemBuilder: (context, index) {
                                     return NextDeliveriesCard(
-                                        uid: auth.user.uid,
+                                        uid: userController.userModel!.uid,
                                         animation: animation,
                                         animationController:
                                             animationController,

@@ -10,13 +10,11 @@ import '../../../../controller/task_controller.dart';
 class NextDeliveriesCardClass extends StatelessWidget {
   const NextDeliveriesCardClass(
       {Key? key,
-        required this.uid,
         required this.animationController,
         required this.animation,
         required this.taskModel})
       : super(key: key);
 
-  final String uid;
   final TaskModel taskModel;
   final AnimationController animationController;
   final Animation<double> animation;

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pronerd/components/build_snack_bar.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/comment.dart';
 import 'package:pronerd/models/post.dart';
 import 'package:pronerd/utils/constants.dart';
@@ -10,7 +11,8 @@ import 'package:uuid/uuid.dart';
 import 'auth_controller.dart';
 
 class CommentController extends GetxController {
-  AuthController auth = Get.find();
+
+  UserController userController = Get.find();
   GlobalKey<FormState> formKey = GlobalKey<FormState>(debugLabel: '_homekey');
 
   Rx<List<CommentModel>> commentList = Rx<List<CommentModel>>([]);
@@ -36,7 +38,7 @@ class CommentController extends GetxController {
       if (_comment.isNotEmpty) {
         // if the likes list contains the user uid, we need to remove it
         String commentId = const Uuid().v1();
-        auth.firestore
+        firestore
             .collection('comments')
             .doc(snap.postId)
             .collection('commentByPost')
@@ -44,9 +46,9 @@ class CommentController extends GetxController {
             .set({
           'commentId': commentId,
           'description': _comment.value,
-          'uid': auth.user.uid,
-          'userName': auth.user.displayName,
-          'userPhotoURL': auth.user.photoURL,
+          'uid': userController.userModel!.uid,
+          'userName': userController.userModel!.userName,
+          'userPhotoURL': userController.userModel!.photoUrl,
           'datePublished': DateTime.now(),
           'postId': snap.postId,
         });

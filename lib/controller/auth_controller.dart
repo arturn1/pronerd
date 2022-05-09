@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:pronerd/components/build_snack_bar.dart';
 import 'package:pronerd/controller/class_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/user.dart' as model;
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -25,7 +26,7 @@ class AuthController extends GetxController {
   // }
 
   static AuthController instance = Get.find();
-  AwesomeController awesomeController = Get.put(AwesomeController());
+  UserController userController = Get.put(UserController());
 
   final RxString _email = ''.obs;
   final RxString _password = ''.obs;
@@ -61,10 +62,10 @@ class AuthController extends GetxController {
 
   //UserModel? _userModel = const UserModel();
 
-  User get user => awesomeController.user;
-
   // UserModel? get userModel => _userModel
   // ;
+
+  User? get user => userController.user;
 
   // @override
   // void onReady() {
@@ -163,7 +164,7 @@ class AuthController extends GetxController {
   Future<void> refreshBio() async {
     await firestore
         .collection('users')
-        .doc(user.uid)
+        .doc(user!.uid)
         .update({'bio': bio}).whenComplete(() => CustomSnack().buildCardInformation('Bio atualizada'));
   }
 

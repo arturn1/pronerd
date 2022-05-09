@@ -7,6 +7,7 @@ import 'package:pronerd/components/build_header.dart';
 import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/search_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 
 import '../../components/build_filter_dialog.dart';
 import '../../components/build_search_field.dart';
@@ -21,9 +22,9 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthController auth = Get.find();
     final SearchController searchController = Get.put(SearchController());
     final TaskController taskController = Get.find();
+    final UserController userController = Get.find();
 
     return Scaffold(
       body: Column(
@@ -164,7 +165,6 @@ class TaskScreen extends StatelessWidget {
                               ],
                             ),
                             child: TaskCard(
-                                uid: auth.user.uid,
                                 taskModel: taskController
                                     .filteredTaskList.value[index]),
                           );

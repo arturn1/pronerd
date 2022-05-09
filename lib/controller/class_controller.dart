@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pronerd/components/build_snack_bar.dart';
 import 'package:pronerd/controller/post_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,9 +13,8 @@ import '../models/room.dart';
 import 'auth_controller.dart';
 
 class ClassController extends GetxController {
-  final AuthController auth = Get.find();
 
-
+  UserController userController = Get.find();
 
   Future<void> onClick() async {
     classListByUser.bindStream(classStreamByUser());
@@ -46,10 +46,10 @@ class ClassController extends GetxController {
         doc(classId).
         set({
           'name': _name.value,
-          'uid': auth.user.uid,
-          'userName': auth.user.displayName,
+          'uid': userController.userModel!.uid,
+          'userName': userController.userModel!.userName,
           'classId': classId,
-          'followers': FieldValue.arrayUnion([auth.user.uid]),
+          'followers': FieldValue.arrayUnion([userController.userModel!.uid]),
           'dateCreated': DateTime.now()
         });
         reset();
@@ -65,7 +65,7 @@ class ClassController extends GetxController {
   Stream<List<RoomModel>> classStreamByUser() {
     return firestore
         .collection("rooms")
-        .where("followers", arrayContains: auth.user.uid)
+        .where("followers", arrayContains: userController.userModel!.uid)
         .snapshots()
         .map((QuerySnapshot query) {
       List<RoomModel> retVal = [];
@@ -110,7 +110,7 @@ class ClassController extends GetxController {
 
     bool following = room
         .data()!['followers']
-        .contains(auth.user.uid);
+        .contains(userController.userModel!.uid);
     setIsFollowing(following);
     // print(following);
   }
@@ -134,9 +134,9 @@ class ClassController extends GetxController {
       await firestore.collection('rooms').doc(classId).get();
       List following = (snap.data()! as dynamic)['followers'];
 
-      if (following.contains(auth.user.uid)) {
+      if (following.contains(userController.userModel!.uid)) {
         await firestore.collection('rooms').doc(classId).update({
-          'followers': FieldValue.arrayRemove([auth.user.uid])
+          'followers': FieldValue.arrayRemove([userController.userModel!.uid])
         });
         setIsFollowing(false);
 
@@ -145,7 +145,7 @@ class ClassController extends GetxController {
         // });
       } else {
         await firestore.collection('rooms').doc(classId).update({
-          'followers': FieldValue.arrayUnion([auth.user.uid])
+          'followers': FieldValue.arrayUnion([userController.userModel!.uid])
         });
         setIsFollowing(true);
 

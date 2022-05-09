@@ -8,18 +8,15 @@ import '../../../controller/task_controller.dart';
 import '../../../utils/constants.dart';
 
 class TaskCard extends StatelessWidget {
-  final String uid;
   final TaskModel taskModel;
 
-  const TaskCard({Key? key, required this.uid, required this.taskModel})
+  const TaskCard({Key? key, required this.taskModel})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // final double fontSize = context.devicePixelRatio == 3.0 ? 55 : 75;
 
     DateController dateController = Get.find();
-    TaskController taskController = Get.find();
 
     return Container(
       padding: const EdgeInsets.all(kPaddingExternalDefault / 2),

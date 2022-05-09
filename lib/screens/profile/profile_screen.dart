@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pronerd/components/build_input_form.dart';
 import 'package:pronerd/controller/auth_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 
 import '../../components/build_custom_appBar.dart';
 import '../../components/build_loading_page.dart';
@@ -17,10 +18,11 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     AuthController auth = Get.find();
+    UserController userController = Get.find();
 
     return Scaffold(
-      // backgroundColor: kPrimarySurface,
       appBar: const CustomAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -35,18 +37,14 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 60,
-                  backgroundImage: NetworkImage(auth.user.photoURL == null
-                      ? 'https://avatars.githubusercontent.com/u/31557902?v=4'
-                      : auth.user.photoURL!),
+                  backgroundImage: NetworkImage(userController.userModel!.photoUrl),
                 ),
                 SizedBox(
                   width: Get.width,
                   height: 70,
                   child: Center(
                     child: Text(
-                      auth.user.displayName == null
-                          ? auth.newUserName
-                          : auth.user.displayName!,
+                      userController.userModel!.userName,
                       style: TextStyle(
                         fontSize: 40,
                         letterSpacing: .05,

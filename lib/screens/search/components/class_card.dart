@@ -26,7 +26,7 @@ class ClassesCard extends StatelessWidget {
     ClassController classController = Get.find();
     TaskController taskController = Get.find();
     PostController postController = Get.find();
-    ProfileController profileController = Get.put(ProfileController());
+    ProfileController profileController = Get.find();
 
     return InkWell(
       splashColor: Colors.red,

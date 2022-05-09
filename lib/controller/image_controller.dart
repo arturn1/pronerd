@@ -5,12 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pronerd/components/build_add_image_screen.dart';
+import 'package:pronerd/controller/user_controller.dart';
+import 'package:pronerd/models/test.dart';
 import 'package:uuid/uuid.dart';
 
+import '../utils/constants.dart';
 import 'auth_controller.dart';
 
 class ImageController extends GetxController {
-  AuthController auth = Get.find();
+
+  UserController userController = Get.find();
 
   //File? pickedImageFile;
   late var imageFileFile = ''.obs;
@@ -42,7 +46,7 @@ class ImageController extends GetxController {
   Future<String> uploadImageToStorage(File file, bool isPost) async {
     // creating location to our firebase storage
     Reference ref =
-        auth.firebaseStorage.ref().child('posts').child(auth.user.uid);
+        firebaseStorage.ref().child('posts').child(userController.userModel!.uid);
     if (isPost) {
       String id = const Uuid().v1();
       ref = ref.child(id);

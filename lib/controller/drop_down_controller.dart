@@ -1,6 +1,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:pronerd/controller/user_controller.dart';
+import 'package:pronerd/models/test.dart';
 
 import '../models/room.dart';
 import '../utils/constants.dart';
@@ -8,7 +10,8 @@ import 'auth_controller.dart';
 
 class DropDownController extends GetxController {
 
-  AuthController auth = Get.find();
+  UserController userController = Get.find()
+;
   @override
   void onInit() {
     super.onInit();
@@ -22,7 +25,7 @@ class DropDownController extends GetxController {
   Stream<List<RoomModel>> classStream() {
     return firestore
         .collection("rooms")
-        .where("followers", arrayContains: auth.user.uid)
+        .where("followers", arrayContains: userController.userModel!.uid)
         .snapshots()
         .map((QuerySnapshot query) {
       //print(query.docs.map((e) => e.data().toString()));

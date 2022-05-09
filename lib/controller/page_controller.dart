@@ -26,19 +26,6 @@ class PageNavigationController extends GetxController {
   setFromController(value) => baseController = value;
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
-  appBarValue() {
-    switch (page.value) {
-      case 0:
-        return "Olá, " + auth.user.displayName!;
-      case 1:
-        return "Tarefas";
-      case 2:
-        return "Meus Posts";
-      case 3:
-        return "Perfil";
-    }
-  }
-
   setPage(value) => page.value = value;
 
   // void closeDrawer() {

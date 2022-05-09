@@ -10,35 +10,7 @@ import '../controller/drop_down_controller.dart';
 import '../controller/task_controller.dart';
 import 'login/login_screen.dart';
 
-class AwesomeController extends GetxController {
-  late Rx<User?> _user;
 
-  User get user => _user.value!;
-
-  @override
-  void onReady() {
-    super.onReady();
-    _user = Rx<User?>(firebaseAuth.currentUser);
-    _user.bindStream(firebaseAuth.authStateChanges());
-    ever(_user, _setInitialScreen);
-  }
-
-  _setInitialScreen(User? user) {
-    if (user == null) {
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        Get.offAll(
-          () => const LoginScreen()
-        );
-      });
-    } else {
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        Get.offAll(
-          () => const BaseScreen()
-        );
-      });
-    }
-  }
-}
 
 class CustomSplashScreen extends StatelessWidget {
   const CustomSplashScreen({Key? key}) : super(key: key);

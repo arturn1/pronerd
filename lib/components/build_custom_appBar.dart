@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/screens/profile/detailed_profile_screen.dart';
 
 import '../controller/auth_controller.dart';
@@ -18,7 +19,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthController auth = Get.find();
+
+    final UserController userController = Get.find();
 
     return SafeArea(
       child: PreferredSize(
@@ -35,9 +37,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                   onTap: () => Get.to(() => const ProfileScreen()),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                      auth.user.photoURL == null
-                          ? 'https://avatars.githubusercontent.com/u/31557902?v=4'
-                          : auth.user.photoURL!,
+                        userController.userModel!.photoUrl
                     ),
                   ),
                 ),

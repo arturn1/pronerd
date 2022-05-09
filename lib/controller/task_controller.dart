@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pronerd/controller/date_picker_controller.dart';
 import 'package:pronerd/controller/drop_down_controller.dart';
 import 'package:pronerd/controller/post_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/task.dart';
 import 'package:pronerd/utils/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,8 +19,8 @@ class TaskController extends GetxController {
   DateController dateController = Get.put(DateController());
   DropDownController dropdownController = Get.put(DropDownController());
   ClassController classController = Get.put(ClassController());
-  AuthController auth = Get.find();
   PostController postController = Get.put(PostController());
+  UserController userController = Get.find();
 
 
   @override
@@ -129,7 +130,7 @@ class TaskController extends GetxController {
   Stream<List<TaskModel>> taskStreamByClassFromUser() {
     return firestore
         .collection("rooms")
-        .where("followers", arrayContains: auth.user.uid)
+        .where("followers", arrayContains: userController.userModel!.uid)
         .snapshots()
         .map((QuerySnapshot query) {
       List<TaskModel> retVal = [];

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:pronerd/controller/image_controller.dart';
+import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/post.dart';
 import 'package:pronerd/screens/base.dart';
 import 'package:pronerd/utils/constants.dart';
@@ -16,8 +17,8 @@ class PostController extends GetxController
     with GetSingleTickerProviderStateMixin {
   ClassController classController = Get.find();
   ImageController imageController = Get.put(ImageController());
-  AuthController auth = Get.find();
   DateController dateController = Get.put(DateController());
+  UserController userController = Get.find();
 
   @override
   void onReady() {
@@ -67,14 +68,14 @@ class PostController extends GetxController
           postId: postId,
           commentLength: 0,
           description: _description.value,
-          uid: auth.user.uid,
-          userName: auth.user.displayName!,
+          uid: userController.userModel!.uid,
+          userName: userController.userModel!.userName,
           datePublished: DateTime.now(),
           postImageUrl: photoUrl,
-          userPhotoURL: auth.user.photoURL!,
-          classId: _classId.isEmpty ? '' : _classId.value,
+          userPhotoURL: userController.userModel!.photoUrl,
+          classId: _classId.value,
           className: _className.value);
-      auth.firestore.collection('posts').doc(postId).set(post.toJson());
+      firestore.collection('posts').doc(postId).set(post.toJson());
       Get.back();
       Get.back();
       updateList();
@@ -88,12 +89,12 @@ class PostController extends GetxController
     try {
       if (likes.contains(uid)) {
         // if the likes list contains the user uid, we need to remove it
-        auth.firestore.collection('posts').doc(postId).update({
+        firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayRemove([uid])
         });
       } else {
         // else we need to add uid to the likes array
-        auth.firestore.collection('posts').doc(postId).update({
+        firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayUnion([uid])
         });
       }
@@ -108,7 +109,7 @@ class PostController extends GetxController
   Future<String> deletePost(String postId) async {
     String res = "Some error occurred";
     try {
-      await auth.firestore.collection('posts').doc(postId).delete();
+      await firestore.collection('posts').doc(postId).delete();
       res = 'success';
     } catch (err) {
       res = err.toString();
@@ -134,7 +135,7 @@ class PostController extends GetxController
   Stream<List<PostModel>> myPostStream() {
     return firestore
         .collection("posts")
-        .where("uid", isEqualTo: auth.user.uid)
+        .where("uid", isEqualTo: userController.userModel!.uid)
         .orderBy("datePublished", descending: true)
         .snapshots()
         .map((QuerySnapshot query) {
