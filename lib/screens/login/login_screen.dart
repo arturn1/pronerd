@@ -22,7 +22,6 @@ class LoginScreen extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     final AuthController auth = Get.put(AuthController());
-    //ClassController classController = Get.put(ClassController());
 
     return Scaffold(
       //bottomSheet: const Footer(),

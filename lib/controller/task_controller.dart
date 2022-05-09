@@ -27,6 +27,7 @@ class TaskController extends GetxController {
   void onInit() {
     super.onInit();
     taskList.bindStream(taskStream()); //stream coming from firebase
+
   }
 
   @override
@@ -127,23 +128,6 @@ class TaskController extends GetxController {
     });
   }
 
-  Stream<List<TaskModel>> taskStreamByClassFromUser() {
-    return firestore
-        .collection("rooms")
-        .where("followers", arrayContains: userController.userModel!.uid)
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<TaskModel> retVal = [];
-      for (var element in query.docs) {
-        var classId = (RoomModel.fromSnap(element)).classId;
-        var el = taskList.value
-            .where((e) => e.classId == classId)
-            .first;
-        retVal.add(el);
-      }
-      return retVal;
-    });
-  }
 
   Stream<List<TaskModel>> taskStreamByClassFromUserT() {
     return firestore

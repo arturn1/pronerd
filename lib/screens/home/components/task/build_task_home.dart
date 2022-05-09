@@ -69,13 +69,9 @@ class _BuildTaskHomeState extends State<BuildTaskHome>
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   if (!snapshot.hasData) {
                     taskController.taskListByClassFromUser
-                        .bindStream(taskController.taskStreamByClassFromUser());
+                        .bindStream(taskController.taskStreamByClassFromUserT());
                   }
-                  return const Center(
-                    child: GFLoader(
-                      type: GFLoaderType.android,
-                    ),
-                  );
+                  return const Center(child: Text("Sem entregas pendentes"));
                 }
 
                 if (snapshot.data!.isEmpty) {

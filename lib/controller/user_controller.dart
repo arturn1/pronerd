@@ -16,7 +16,7 @@ class UserController extends GetxController {
   UserModel? get userModel => _userModel;
   setUser(UserModel value) => _userModel = value;
 
-  User? get user => _user.value;
+  //User? get user => _user.value;
 
   @override
   void onReady() {

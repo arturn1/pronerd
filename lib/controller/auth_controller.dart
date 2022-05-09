@@ -2,28 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pronerd/components/build_snack_bar.dart';
 import 'package:pronerd/controller/class_controller.dart';
-import 'package:pronerd/controller/task_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/user.dart' as model;
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../screens/login/login_screen.dart';
-import '../screens/splash_screen.dart';
 
 class AuthController extends GetxController {
   var firebaseAuth = FirebaseAuth.instance;
   var firebaseStorage = FirebaseStorage.instance;
   var firestore = FirebaseFirestore.instance;
-
-  // TaskController taskController = Get.put(TaskController());
-
-  // void updateHome() {
-  //   taskController.updateHome();
-  // }
 
   static AuthController instance = Get.find();
   UserController userController = Get.put(UserController());
@@ -57,36 +47,6 @@ class AuthController extends GetxController {
   String get email => _email.value;
   String get password => _password.value;
   String get bio => _bio.value;
-
-  // late Rx<User?> _user;
-
-  //UserModel? _userModel = const UserModel();
-
-  // UserModel? get userModel => _userModel
-  // ;
-
-  User? get user => userController.user;
-
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  //   _user = Rx<User?>(firebaseAuth.currentUser);
-  //   // _user.value == null
-  //   //     ? _user.value
-  //   //     : _userModel = userMapGoogleToUser(_user.value);
-  //   _user.bindStream(firebaseAuth.authStateChanges());
-  //   ever(_user, _setInitialScreen);
-  // }
-  //
-  // _setInitialScreen(User? user) {
-  //   Future.delayed(const Duration(milliseconds: 2500), () {
-  //     if (user == null) {
-  //       Get.offAll(() => const LoginScreen());
-  //     } else {
-  //       Get.offAll(() => const CustomSplashScreen());
-  //     }
-  //   });
-  // }
 
   Future<void> registerUser() async {
     try {
@@ -131,11 +91,7 @@ class AuthController extends GetxController {
         final userCredential = await firebaseAuth.signInWithEmailAndPassword(
             email: _email.value, password: _password.value);
         final user = userCredential.user;
-        //_userModel = userMapGoogleToUser(user);
-        //CustomSnack().buildCardSuccess('Usuário criado com sucesso');
-        //updateHome();
-      } else {
-        //CustomSnack().buildCardError('Preencha todos os campos');
+
       }
     } catch (e) {
       CustomSnack().buildCardError('E-mail ou senha inválidos.');
@@ -150,8 +106,6 @@ class AuthController extends GetxController {
   }
 
   bool enableButton() {
-    //CustomSnack().buildCardError('Insira todos os campos');
-
     return _email.value.isNotEmpty && _password.value.isNotEmpty;
   }
 
@@ -161,18 +115,8 @@ class AuthController extends GetxController {
          _newPassword.value.length > 8 && _newEmail.value.isEmail && _newConfirmedPassword.value == _newPassword.value;
   }
 
-  Future<void> refreshBio() async {
-    await firestore
-        .collection('users')
-        .doc(user!.uid)
-        .update({'bio': bio}).whenComplete(() => CustomSnack().buildCardInformation('Bio atualizada'));
-  }
-
-
-
   Future doNothing() async {
     CustomSnack().buildCardError('Preencha todos os campos com dados válidos');
-
     return null;
   }
 

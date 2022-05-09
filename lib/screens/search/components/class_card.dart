@@ -22,11 +22,11 @@ class ClassesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateController dateController = Get.find();
+
     ClassController classController = Get.find();
     TaskController taskController = Get.find();
     PostController postController = Get.find();
-    ProfileController profileController = Get.find();
+    ProfileController profileController = Get.put(ProfileController());
 
     return InkWell(
       splashColor: Colors.red,
