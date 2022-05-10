@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/comment_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
+import 'package:pronerd/models/comment.dart';
 import 'package:pronerd/models/post.dart';
 
 import '../../components/build_header.dart';
@@ -19,37 +22,44 @@ class CommentsScreen extends StatelessWidget {
     CommentController commentController = Get.find();
     UserController userController = Get.find();
 
-
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
             Container(
               color: kPrimaryBarColor,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: GestureDetector(
-                        child: const Icon(Icons.arrow_back_rounded),
-                        onTap: () => Get.back(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width:20
-                    ),
-                    const CustomHeader(text: 'Comentários')
-                  ]),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: GestureDetector(
+                    child: const Icon(Icons.arrow_back_rounded),
+                    onTap: () => Get.back(),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                const CustomHeader(text: 'Comentários')
+              ]),
             ),
-            GetX<CommentController>(
-              init: Get.put<CommentController>(CommentController()),
-              builder: (CommentController commentController) {
+            StreamBuilder<List<CommentModel>>(
+              stream: commentController.getCommentStream(snap),
+              builder: (_, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (!snapshot.hasData) {
+                    return Container(
+                      margin: const EdgeInsets.all(kMarginDefault),
+                      child: const Center(
+                          child: GFLoader(
+                        type: GFLoaderType.ios,
+                      )),
+                    );
+                  }
+                }
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: commentController.commentList.value.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (_, index) => CommentCard(
-                      snap: commentController.commentList.value[index],
+                      snap: snapshot.data![index],
                     ),
                   ),
                 );
@@ -69,7 +79,8 @@ class CommentsScreen extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(userController.userModel!.photoUrl),
+                backgroundImage:
+                    NetworkImage(userController.userModel!.photoUrl),
                 radius: 18,
               ),
               Expanded(

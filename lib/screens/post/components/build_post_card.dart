@@ -22,7 +22,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProfileController profileController = Get.find();
-    CommentController commentController = Get.put(CommentController());
+    // CommentController commentController = Get.put(CommentController());
     DateController dateController = Get.find();
 
     return Container(
@@ -120,22 +120,12 @@ class PostCard extends StatelessWidget {
                       backgroundColor: kPrimaryBarColor,
                     ),
                     onPressed: () => {
-                          commentController.onClick(snap).then(
-                              (v) => Get.to(() => CommentsScreen(snap: snap)))
+
+                                  Get.to(() => CommentsScreen(snap: snap))
+
                         },
                     label: Text(snap.commentLength.toString())),
               ),
-              // SizedBox(
-              //   // margin: const EdgeInsets.only(left: kMarginDefault/10),
-              //   height: pixelDevice == 3
-              //       ? kHeightDefault / 14
-              //       : kHeightDefault / 18,
-              //   child: IconButton(
-              //       icon: const Icon(FontAwesomeIcons.star, size: 25,),
-              //       onPressed: () => {doNothing(context)},
-              //       // label: const Text('')
-              //   ),
-              // ),
             ],
           ),
         )

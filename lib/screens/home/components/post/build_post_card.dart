@@ -119,9 +119,9 @@ class PostCard extends StatelessWidget {
                 backgroundColor: kSecondaryColorContainer90,
               ),
               onPressed: () => {
-                commentController
-                    .onClick(snap)
-                    .then((v) => Get.to(() => CommentsScreen(snap: snap)))
+
+                    Get.to(() => CommentsScreen(snap: snap))
+
                 // .then((value) => fetchCommentLen())
               },
               label: Text(snap.commentLength.toString()),
