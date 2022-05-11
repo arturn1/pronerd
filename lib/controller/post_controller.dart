@@ -3,18 +3,14 @@ import 'dart:io';
 import 'package:pronerd/controller/image_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/post.dart';
-import 'package:pronerd/screens/base.dart';
-import 'package:pronerd/utils/constants.dart';
+import 'package:pronerd/services/post_service.dart';
 import 'package:uuid/uuid.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
-import 'auth_controller.dart';
 import 'class_controller.dart';
 import 'date_picker_controller.dart';
 
-class PostController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+class PostController extends GetxController with PostService {
   ClassController classController = Get.find();
   ImageController imageController = Get.put(ImageController());
   DateController dateController = Get.put(DateController());
@@ -22,25 +18,19 @@ class PostController extends GetxController
 
   @override
   void onReady() {
-    postList.bindStream(postStream()); //stream coming from firebase
-    myPostList.bindStream(myPostStream());
-    postListByClassFromUser.bindStream(postStreamByClassFromUser());
+    myPostList.bindStream(getMyPostStream());
+    postListByClassFromUser.bindStream(getPostStreamByClassFromUser());
   }
 
-  Rx<List<PostModel>> postList = Rx<List<PostModel>>([]);
   Rx<List<PostModel>> myPostList = Rx<List<PostModel>>([]);
   Rx<List<PostModel>> postListByClass = Rx<List<PostModel>>([]);
   Rx<List<PostModel>> postListByClassFromUser = Rx<List<PostModel>>([]);
-
-  final Rx<List<PostModel>> filteredPostList = Rx<List<PostModel>>([]);
-
+  Rx<List<PostModel>> filteredPostList = Rx<List<PostModel>>([]);
 
   final RxString _description = ''.obs;
   final RxString _classId = ''.obs;
   final RxString _className = ''.obs;
   final RxInt _commentLength = 0.obs;
-
-  String get className => _className.value;
 
   setDescription(value) => _description.value = value;
 
@@ -50,20 +40,23 @@ class PostController extends GetxController
 
   setCommentLength(v) => _commentLength.value = v;
 
+  String get className => _className.value;
+
   int get commentLength => _commentLength.value;
 
   Future<void> onClick(String snap) async {
-    postListByClass.bindStream(postStreamByClass(snap));
+    postListByClass.bindStream(getPostStreamByClass(snap));
   }
 
   Future<void> onFollow() async {
-    postListByClassFromUser.bindStream(postStreamByClassFromUser());
+    postListByClassFromUser.bindStream(getPostStreamByClassFromUser());
   }
 
   Future<void> addPost(File file) async {
     try {
       String photoUrl = await imageController.uploadImageToStorage(file, true);
-      String postId = const Uuid().v1(); // creates unique id based on time
+
+      String postId = const Uuid().v1();
       PostModel post = PostModel(
           postId: postId,
           commentLength: 0,
@@ -75,127 +68,96 @@ class PostController extends GetxController
           userPhotoURL: userController.userModel!.photoUrl,
           classId: _classId.value,
           className: _className.value);
-      firestore.collection('posts').doc(postId).set(post.toJson());
-      Get.back();
-      Get.back();
-      updateList();
-    } catch (err) {
-      //CustomSnack().buildCardError(err.toString());
+
+      addPostToDB(post);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<String> likePost(String postId, String uid, List likes) async {
-    String res = "Some error occurred";
+  Stream<List<PostModel>> getMyPostStream() {
     try {
-      if (likes.contains(uid)) {
-        // if the likes list contains the user uid, we need to remove it
-        firestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayRemove([uid])
-        });
-      } else {
-        // else we need to add uid to the likes array
-        firestore.collection('posts').doc(postId).update({
-          'likes': FieldValue.arrayUnion([uid])
-        });
-      }
-      res = 'success';
-    } catch (err) {
-      res = err.toString();
+      return getMyPostStreamFromDB(userController.userModel!);
+    } catch (e) {
+      rethrow;
     }
-    return res;
   }
 
-  // Delete post
-  Future<String> deletePost(String postId) async {
-    String res = "Some error occurred";
+  Stream<List<PostModel>> getPostStreamByClass(String classId) {
     try {
-      await firestore.collection('posts').doc(postId).delete();
-      res = 'success';
-    } catch (err) {
-      res = err.toString();
+      return getPostStreamByClassFromDB(classId);
+    } catch (e) {
+      rethrow;
     }
-    return res;
   }
 
-  Stream<List<PostModel>> postStream() {
-    return firestore
-        .collection("posts")
-        // .where("uid", isEqualTo: auth.user.uid)
-        .orderBy("datePublished", descending: true)
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<PostModel> retVal = [];
-      for (var element in query.docs) {
-        retVal.add(PostModel.fromSnap(element));
-      }
-      return retVal;
-    });
+  Stream<List<PostModel>> getPostStreamByClassFromUser() {
+    try{
+      return getPostStreamByClassFromUserFromDB(userController.userModel);
+    }catch(e){
+      rethrow;
+    }
   }
 
-  Stream<List<PostModel>> myPostStream() {
-    return firestore
-        .collection("posts")
-        .where("uid", isEqualTo: userController.userModel!.uid)
-        .orderBy("datePublished", descending: true)
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<PostModel> retVal = [];
-      for (var element in query.docs) {
-        retVal.add(PostModel.fromSnap(element));
-      }
-      return retVal;
-    });
-  }
-
-  Stream<List<PostModel>> postStreamByClass(String classId) {
-    return firestore
-        .collection("posts")
-        .where("classId", isEqualTo: classId)
-        .orderBy("datePublished", descending: true)
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<PostModel> retVal = [];
-      for (var element in query.docs) {
-        retVal.add(PostModel.fromSnap(element));
-      }
-      return retVal;
-    });
-  }
-
-  Stream<List<PostModel>> postStreamByClassFromUser() {
-    return firestore
-        .collection("posts")
-        // .where("followers", arrayContains: auth.userModel!.uid)
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<PostModel> retVal = [];
-      for (var element in query.docs) {
-        var postModel = (PostModel.fromSnap(element));
-        var classId = (PostModel.fromSnap(element)).classId;
-        for (var f in classController.classListByUserT) {
-          if (f.classId == classId) {
-            //return retVal;
-            retVal.add(postModel);
-          }
-        }
-      }
-      retVal.sort((a, b) => a.datePublished.compareTo(b.datePublished));
-      return retVal.reversed.toList();
-    });
-  }
-
-  updateList()  {
+  updateList() {
     filteredPostList.value = postListByClassFromUser.value;
   }
 
-  void runFilter(DateTime v) {
+  void runFilter(DateTime d) {
     List<PostModel> results = [];
-      results = postListByClassFromUser.value
-          .where((post) =>
-          post.datePublished.day == v.day)
-          .toList();
+    results = postListByClassFromUser.value
+        .where((post) => post.datePublished.day == d.day)
+        .toList();
 
     filteredPostList.value = results;
-    print(filteredPostList.value);
   }
+
+// Future<String> likePost(String postId, String uid, List likes) async {
+//   String res = "Some error occurred";
+//   try {
+//     if (likes.contains(uid)) {
+//       // if the likes list contains the user uid, we need to remove it
+//       firestore.collection('posts').doc(postId).update({
+//         'likes': FieldValue.arrayRemove([uid])
+//       });
+//     } else {
+//       // else we need to add uid to the likes array
+//       firestore.collection('posts').doc(postId).update({
+//         'likes': FieldValue.arrayUnion([uid])
+//       });
+//     }
+//     res = 'success';
+//   } catch (err) {
+//     res = err.toString();
+//   }
+//   return res;
+// }
+
+// Delete post
+// Future<String> deletePost(String postId) async {
+//   String res = "Some error occurred";
+//   try {
+//     await firestore.collection('posts').doc(postId).delete();
+//     res = 'success';
+//   } catch (err) {
+//     res = err.toString();
+//   }
+//   return res;
+// }
+
+// Stream<List<PostModel>> postStream() {
+//   return firestore
+//       .collection("posts")
+//       // .where("uid", isEqualTo: auth.user.uid)
+//       .orderBy("datePublished", descending: true)
+//       .snapshots()
+//       .map((QuerySnapshot query) {
+//     List<PostModel> retVal = [];
+//     for (var element in query.docs) {
+//       retVal.add(PostModel.fromSnap(element));
+//     }
+//     return retVal;
+//   });
+// }
+
 }

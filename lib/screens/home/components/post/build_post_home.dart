@@ -35,12 +35,12 @@ class BuildPostHome extends StatelessWidget {
         NotificationListener<ScrollEndNotification>(
           onNotification: onNotification,
           child: StreamBuilder<List<PostModel>>(
-              stream: postController.postListByClassFromUser.stream,
+              stream: postController.getPostStreamByClassFromUser(),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   if (!snapshot.hasData) {
                     postController.postListByClassFromUser
-                        .bindStream(postController.postStreamByClassFromUser());
+                        .bindStream(postController.getPostStreamByClassFromUser());
                   }
                   return const Center(
                     child: GFLoader(

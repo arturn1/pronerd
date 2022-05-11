@@ -52,8 +52,12 @@ class ClassController extends GetxController {
           'followers': FieldValue.arrayUnion([userController.userModel!.uid]),
           'dateCreated': DateTime.now()
         });
+        DocumentSnapshot doc =
+        await firestore.collection('users').doc(userController.userModel!.uid).get();
+        await firestore.collection('users').doc(userController.userModel!.uid).update({
+          'classes': FieldValue.arrayUnion([classId]),
+        });
         reset();
-        //formKey.currentState!.reset();
       } else {
         res = "Please enter text";
       }
@@ -103,7 +107,7 @@ class ClassController extends GetxController {
   setIsFollowing(v) => isFollowing.value = v;
 
   Future <void> getData(RoomModel snap) async {
-    var room = await FirebaseFirestore.instance
+    var room = await firestore
         .collection('rooms')
         .doc(snap.classId)
         .get();
@@ -138,6 +142,12 @@ class ClassController extends GetxController {
         await firestore.collection('rooms').doc(classId).update({
           'followers': FieldValue.arrayRemove([userController.userModel!.uid])
         });
+
+        DocumentSnapshot doc =
+        await firestore.collection('users').doc(userController.userModel!.uid).get();
+        await firestore.collection('users').doc(userController.userModel!.uid).update({
+          'commentLength': FieldValue.arrayRemove([classId]),
+        });
         setIsFollowing(false);
 
         // await auth.firestore.collection('users').doc(uid).update({
@@ -146,6 +156,12 @@ class ClassController extends GetxController {
       } else {
         await firestore.collection('rooms').doc(classId).update({
           'followers': FieldValue.arrayUnion([userController.userModel!.uid])
+        });
+
+        DocumentSnapshot doc =
+        await firestore.collection('users').doc(userController.userModel!.uid).get();
+        await firestore.collection('users').doc(userController.userModel!.uid).update({
+          'commentLength': FieldValue.arrayUnion([classId]),
         });
         setIsFollowing(true);
 

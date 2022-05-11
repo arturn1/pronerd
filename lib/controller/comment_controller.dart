@@ -13,6 +13,7 @@ import 'package:uuid/uuid.dart';
 import 'auth_controller.dart';
 
 class CommentController extends GetxController with CommentService {
+
   UserController userController = Get.find();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 

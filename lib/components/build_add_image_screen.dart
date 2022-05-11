@@ -72,10 +72,6 @@ class ConfirmScreen extends StatelessWidget {
                                       color: Colors.green, width: 4.0))),
                         ),
                       ),
-                      // CustomFormInput(
-                      //     controller: (v) => postController.setDescription(v),
-                      //     icon: Icons.description,
-                      //     title: 'Descrição'),
                       const SizedBox(
                         height: 20,
                       ),
