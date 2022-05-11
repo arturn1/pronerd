@@ -93,8 +93,8 @@ class ClassesCard1 extends StatelessWidget {
     return InkWell(
       onTap: () => {
         postController.onClick(roomModel.classId),
-        taskController.onClick(roomModel.classId),
-        classController.getData(roomModel)
+        taskController.onClick(roomModel.classId)
+        // classController.getData(roomModel)
             .then((v) => Get.to(() => ClassFeed(roomModel: roomModel),
           // transition: Transition.rightToLeft
         ))

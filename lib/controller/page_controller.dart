@@ -7,7 +7,7 @@ import 'package:pronerd/controller/task_controller.dart';
 
 class PageNavigationController extends GetxController {
 
-  final AuthController auth = Get.find();
+  // final AuthController auth = Get.find();
   DropDownController dropdown = Get.put(DropDownController());
   TaskController taskController = Get.find();
   PostController postController = Get.find();

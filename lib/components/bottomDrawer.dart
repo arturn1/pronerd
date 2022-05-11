@@ -15,7 +15,6 @@ class AnimatedBottomDrawer extends StatefulWidget {
 
 class _AnimatedBottomDrawer extends State<AnimatedBottomDrawer> {
   final PageNavigationController pageController = Get.find();
-  final AuthController auth = Get.find();
 
   @override
   Widget build(BuildContext context) {

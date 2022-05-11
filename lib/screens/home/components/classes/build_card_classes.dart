@@ -27,7 +27,7 @@ class ClassesCard extends StatelessWidget {
       onTap: () => {
         postController.onClick(roomModel.classId),
         taskController.onClick(roomModel.classId),
-          classController.getData(roomModel)
+          classController.getUserIsFollowing(roomModel)
             .then((v) => Get.to(() => ClassFeed(roomModel: roomModel),
             // transition: Transition.rightToLeft
         ))

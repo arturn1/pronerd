@@ -70,10 +70,6 @@ class AuthController extends GetxController with AuthService {
     return null;
   }
 
-
-
-
-
   String? getNameError(String? value) {
     if (value!.isEmpty) {
       return 'Campo Obrigatorio';
