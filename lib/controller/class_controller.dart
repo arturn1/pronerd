@@ -2,15 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:pronerd/components/build_snack_bar.dart';
-import 'package:pronerd/controller/post_controller.dart';
-import 'package:pronerd/controller/task_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/room.dart';
-import 'auth_controller.dart';
 
 class ClassController extends GetxController {
 
@@ -146,7 +142,7 @@ class ClassController extends GetxController {
         DocumentSnapshot doc =
         await firestore.collection('users').doc(userController.userModel!.uid).get();
         await firestore.collection('users').doc(userController.userModel!.uid).update({
-          'commentLength': FieldValue.arrayRemove([classId]),
+          'classes': FieldValue.arrayRemove([classId]),
         });
         setIsFollowing(false);
 
@@ -161,7 +157,7 @@ class ClassController extends GetxController {
         DocumentSnapshot doc =
         await firestore.collection('users').doc(userController.userModel!.uid).get();
         await firestore.collection('users').doc(userController.userModel!.uid).update({
-          'commentLength': FieldValue.arrayUnion([classId]),
+          'classes': FieldValue.arrayUnion([classId]),
         });
         setIsFollowing(true);
 

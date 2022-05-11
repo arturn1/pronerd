@@ -7,19 +7,17 @@ import 'package:pronerd/services/post_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
 
-import 'class_controller.dart';
-import 'date_picker_controller.dart';
 
 class PostController extends GetxController with PostService {
-  ClassController classController = Get.find();
+
   ImageController imageController = Get.put(ImageController());
-  DateController dateController = Get.put(DateController());
   UserController userController = Get.find();
 
   @override
   void onReady() {
     myPostList.bindStream(getMyPostStream());
     postListByClassFromUser.bindStream(getPostStreamByClassFromUser());
+    resetPostScreenList();
   }
 
   Rx<List<PostModel>> myPostList = Rx<List<PostModel>>([]);
@@ -99,11 +97,11 @@ class PostController extends GetxController with PostService {
     }
   }
 
-  updateList() {
+  resetPostScreenList() {
     filteredPostList.value = postListByClassFromUser.value;
   }
 
-  void runFilter(DateTime d) {
+  void runPostFilter(DateTime d) {
     List<PostModel> results = [];
     results = postListByClassFromUser.value
         .where((post) => post.datePublished.day == d.day)

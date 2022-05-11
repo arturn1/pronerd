@@ -10,12 +10,11 @@ import 'package:pronerd/screens/home/components/post/build_post_card.dart';
 import '../../../../models/post.dart';
 import '../../../../utils/constants.dart';
 
-class BuildPostHome extends StatelessWidget {
+class BuildPostHome extends GetView<PostController> {
   const BuildPostHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    PostController postController = Get.find();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,12 +34,12 @@ class BuildPostHome extends StatelessWidget {
         NotificationListener<ScrollEndNotification>(
           onNotification: onNotification,
           child: StreamBuilder<List<PostModel>>(
-              stream: postController.getPostStreamByClassFromUser(),
+              stream: controller.getPostStreamByClassFromUser(),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   if (!snapshot.hasData) {
-                    postController.postListByClassFromUser
-                        .bindStream(postController.getPostStreamByClassFromUser());
+                    controller.postListByClassFromUser.bindStream(
+                        controller.getPostStreamByClassFromUser());
                   }
                   return const Center(
                     child: GFLoader(

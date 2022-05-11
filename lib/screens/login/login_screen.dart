@@ -56,7 +56,7 @@ class LoginScreen extends GetView<AuthController> {
                 const SizedBox(height: 40.0),
                 Obx(() => CustomBtn(
                     text: 'Acessar',
-                    function: auth.enableButton() ? () => Get.to(() => CustomLoaderLogin(
+                    function: auth.enableLoginButton() ? () => Get.to(() => CustomLoaderLogin(
                         getData: auth.loginUser(),
                       getBack: () => Get.to(() => const LoginScreen()),
 

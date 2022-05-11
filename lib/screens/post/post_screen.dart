@@ -2,26 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:pronerd/components/build_header.dart';
-import 'package:pronerd/controller/page_controller.dart';
 import 'package:pronerd/controller/post_controller.dart';
-import 'package:pronerd/components/build_custom_appBar.dart';
 
-import '../../components/build_filter_dialog.dart';
 import '../../controller/date_picker_controller.dart';
-import '../../test.dart';
 import '../../utils/constants.dart';
 import 'components/build_post_card.dart';
 
-class PostScreen extends StatelessWidget {
+class PostScreen extends GetView<PostController> {
   PostScreen({Key? key}) : super(key: key);
 
   var data = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-    final PageNavigationController pageController = Get.find();
 
-    PostController postController = Get.find();
     DateController dateController = Get.find();
 
     return Scaffold(
@@ -36,7 +30,7 @@ class PostScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    Obx(() => Text(postController.filteredPostList.value.length
+                    Obx(() => Text(controller.filteredPostList.value.length
                               .toString() +
                           ' posts encontrados'),
                     ),
@@ -49,7 +43,7 @@ class PostScreen extends StatelessWidget {
                       child: const Icon(Icons.date_range),
                       onTap: () => dateController
                           .postDateFilter(context)
-                          .then((value) => postController.runFilter(value)),
+                          .then((value) => controller.runPostFilter(value)),
                     ),
                     const SizedBox(
                       width: 30,
@@ -57,7 +51,8 @@ class PostScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       child: const Icon(Icons.cancel_rounded),
-                      onTap: () => postController.updateList()
+                      onTap: () => {}
+                          //postController.resetPostList()
                     )
                   ],
                 ),

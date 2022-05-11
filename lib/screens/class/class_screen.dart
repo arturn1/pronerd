@@ -1,13 +1,10 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pronerd/screens/class/components/post/build_post_class.dart';
 import 'package:pronerd/screens/class/components/task/build_tasks.dart';
 import 'package:pronerd/components/build_custom_appBar.dart';
 
-import '../../components/build_snack_entry_source.dart';
 import '../../controller/class_controller.dart';
 import '../../controller/date_picker_controller.dart';
 import '../../controller/post_controller.dart';
@@ -37,19 +34,12 @@ class ClassFeed extends StatelessWidget {
                 elevation: 0,
                 automaticallyImplyLeading: false,
                 flexibleSpace: CustomAppBar(),
-                //floating: true,
-                // pinned: false,
-                // snap: false,
-                // stretch: false,
                 collapsedHeight: 100,
                 expandedHeight: 100,
               ),
               CustomSliverHeaderRoomNameAndFollowBtn(roomModel: roomModel),
               SliverToBoxAdapter(
-                  child:
-                      // delegate: SliverChildListDelegate(
-                      //   [
-                      Obx(
+                  child: Obx(
                 () => Container(
                   color: kPrimaryBarColor,
                   child: AnimatedCrossFade(
@@ -236,7 +226,7 @@ class DelegateRoomNameAndFollowBtn extends SliverPersistentHeaderDelegate {
           height: 70,
           width: double.infinity,
           child: Row(
-             //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

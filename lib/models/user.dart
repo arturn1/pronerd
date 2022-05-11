@@ -46,3 +46,31 @@ class UserModel {
         "classes": classes
       };
 }
+
+class RegisterUserViewModel {
+  final String name;
+  final String email;
+  final String password;
+  final String confirmPassword;
+
+  const RegisterUserViewModel({
+    this.name = '',
+    this.email = '',
+    this.password = '',
+    this.confirmPassword = ''
+  });
+}
+
+
+
+class LoginViewModel {
+  final String name;
+  final String email;
+  final String password;
+
+  const LoginViewModel({
+    this.name = '',
+    this.email = '',
+    this.password = '',
+  });
+}

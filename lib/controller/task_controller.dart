@@ -92,7 +92,7 @@ class TaskController extends GetxController {
         'isDone': _isDone.value
       });
       reset();
-      updateList();
+      resetTaskScreenList();
       //formKey.currentState!.reset();
     } catch (e) {
       //rethrow;
@@ -159,7 +159,7 @@ class TaskController extends GetxController {
     try {
       await firestore.collection('tasks').doc(taskId).delete();
       res = 'Entrega concluída com sucesso';
-      updateList();
+      resetTaskScreenList();
       return CustomSnack().buildCardSuccess(res.toString());
     } catch (err) {
       //return CustomSnack().buildCardError(res.toString());
@@ -171,7 +171,7 @@ class TaskController extends GetxController {
     onFollow();
   }
 
-  updateList()  {
+  resetTaskScreenList()  {
     filteredTaskList.value = getTaskListByClassFromUser;
   }
 
