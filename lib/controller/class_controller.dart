@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:pronerd/controller/post_controller.dart';
+import 'package:pronerd/controller/task_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/services/class_service.dart';
 import 'package:uuid/uuid.dart';
@@ -7,7 +9,11 @@ import 'package:uuid/uuid.dart';
 import '../models/room.dart';
 
 class ClassController extends GetxController with ClassService {
+
   UserController userController = Get.find();
+
+  PostController postController = Get.put(PostController());
+  TaskController taskController = Get.put(TaskController());
 
   Future<void> onClick() async {
     classListByUser.bindStream(getClassStreamByUser());
@@ -72,6 +78,12 @@ class ClassController extends GetxController with ClassService {
       unfollowClassToDB(classId, userController.userModel);
       setIsFollowing(!b);
     }
+    updateHome();
+  }
+
+  Future updateHome() async {
+    postController.onFollow();
+    taskController.onFollow();
   }
 
   void reset() {

@@ -1,38 +1,29 @@
-import 'package:flutter/material.dart';
 import 'package:pronerd/controller/date_picker_controller.dart';
-import 'package:pronerd/controller/drop_down_controller.dart';
 import 'package:pronerd/controller/post_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/task.dart';
+import 'package:pronerd/services/task_service.dart';
 import 'package:pronerd/utils/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
 import '../components/build_snack_bar.dart';
-import '../models/room.dart';
-import 'auth_controller.dart';
 import 'class_controller.dart';
 
-class TaskController extends GetxController {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>(debugLabel: '_screenkey');
+class TaskController extends GetxController with TaskService {
   DateController dateController = Get.put(DateController());
-  DropDownController dropdownController = Get.put(DropDownController());
-  ClassController classController = Get.put(ClassController());
-  PostController postController = Get.put(PostController());
   UserController userController = Get.find();
-
 
   @override
   void onInit() {
     super.onInit();
     taskList.bindStream(taskStream()); //stream coming from firebase
-
   }
 
   @override
   void onReady() {
-    taskListByClassFromUser.bindStream(taskStreamByClassFromUserT());
+    taskListByClassFromUser.bindStream(getTaskStreamByClassFromUser());
   }
 
   Future<void> onClick(String snap) async {
@@ -41,20 +32,18 @@ class TaskController extends GetxController {
   }
 
   Future<void> onFollow() async {
-    taskListByClassFromUser.bindStream(taskStreamByClassFromUserT());
-
+    taskListByClassFromUser.bindStream(getTaskStreamByClassFromUser());
   }
 
   Rx<List<TaskModel>> taskList = Rx<List<TaskModel>>([]);
   Rx<List<TaskModel>> taskListByClass = Rx<List<TaskModel>>([]);
   final Rx<List<TaskModel>> taskListByClassFromUser = Rx<List<TaskModel>>([]);
 
-
   final Rx<List<TaskModel>> filteredTaskList = Rx<List<TaskModel>>([]);
   final Rx<List<TaskModel>> taskListNew = Rx<List<TaskModel>>([]);
 
-
-  List<TaskModel> get getTaskListByClassFromUser => taskListByClassFromUser.value;
+  List<TaskModel> get getTaskListByClassFromUser =>
+      taskListByClassFromUser.value;
 
   final RxString _classId = "".obs;
   final RxString _className = "".obs;
@@ -83,95 +72,57 @@ class TaskController extends GetxController {
   Future<void> addTask() async {
     try {
       String taskId = const Uuid().v1();
-      await firestore.collection("tasks").doc(taskId).set({
-        'taskId': taskId,
-        'classId': _classId.value,
-        'className': _className.value,
-        'description': _description.value,
-        'finalDate': dateController.pickedDate!.value,
-        'isDone': _isDone.value
-      });
-      reset();
+      TaskModel taskModel = TaskModel(
+          taskId: taskId,
+          classId: _classId.value,
+          className: _className.value,
+          description: _description.value,
+          finalDate: dateController.pickedDate!.value,
+          isDone: _isDone.value);
+      addTaskToDB(taskModel);
+      resetDescriptionInput();
       resetTaskScreenList();
-      //formKey.currentState!.reset();
     } catch (e) {
-      //rethrow;
+      rethrow;
     }
   }
 
   Stream<List<TaskModel>> taskStream() {
-    return firestore
-        .collection("tasks")
-        .orderBy("finalDate")
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<TaskModel> retVal = [];
-      for (var element in query.docs) {
-        retVal.add(TaskModel.fromSnap(element));
-      }
-      return retVal;
-    });
-  }
-
-  Stream<List<TaskModel>> taskStreamByClass(String classId) {
-    return firestore
-        .collection("tasks")
-        .where('classId', isEqualTo: classId)
-        .orderBy("finalDate")
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<TaskModel> retVal = [];
-      for (var element in query.docs) {
-        retVal.add(TaskModel.fromSnap(element));
-      }
-      return retVal;
-    });
-  }
-
-
-  Stream<List<TaskModel>> taskStreamByClassFromUserT() {
-    return firestore
-        .collection("tasks")
-        .snapshots()
-        .map((QuerySnapshot query) {
-      List<TaskModel> retVal = [];
-      for (var element in query.docs) {
-        var taskModel = (TaskModel.fromSnap(element));
-        var classId = (TaskModel.fromSnap(element)).classId;
-        for (var f in classController.classListByUserT) {
-          if (f.classId == classId) {
-            retVal.add(taskModel);
-          }
-        }
-      }
-      retVal.sort((a, b) => a.finalDate.compareTo(b.finalDate));
-      return retVal;
-    });
-  }
-
-  void reset() {
-    setDescription('');
-    // setClassId('');
-  }
-
-  Future<void> deleteTask(String taskId) async {
-    String res = "Some error occurred";
     try {
-      await firestore.collection('tasks').doc(taskId).delete();
-      res = 'Entrega concluída com sucesso';
-      resetTaskScreenList();
-      return CustomSnack().buildCardSuccess(res.toString());
-    } catch (err) {
-      //return CustomSnack().buildCardError(res.toString());
+      return getTaskStreamFromDB();
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future updateHome() async {
-    postController.onFollow();
-    onFollow();
+  Stream<List<TaskModel>> taskStreamByClass(String classId) {
+    try {
+      return getTaskStreamByClassFrmDB(classId);
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  resetTaskScreenList()  {
+  Stream<List<TaskModel>> getTaskStreamByClassFromUser() {
+    try {
+      return getTaskStreamByClassFromUserFromDB(userController.userModel);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+
+  Future<void> deleteTask(String taskId) async {
+    try {
+      deleteTaskFromDB(taskId);
+      return CustomSnack().buildCardSuccess('Entrega concluída com sucesso');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  resetTaskScreenList() {
     filteredTaskList.value = getTaskListByClassFromUser;
   }
 
@@ -181,8 +132,7 @@ class TaskController extends GetxController {
       results = getTaskListByClassFromUser;
     } else {
       results = getTaskListByClassFromUser
-          .where((task) =>
-          task.description
+          .where((task) => task.description
               .toLowerCase()
               .contains(enteredKeyword.toLowerCase()))
           .toList();
@@ -190,4 +140,7 @@ class TaskController extends GetxController {
     filteredTaskList.value = results;
   }
 
+  void resetDescriptionInput() {
+    setDescription('');
+  }
 }

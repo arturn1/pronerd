@@ -7,6 +7,8 @@ import 'package:pronerd/services/post_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
 
+import '../models/room.dart';
+
 
 class PostController extends GetxController with PostService {
 
@@ -99,6 +101,11 @@ class PostController extends GetxController with PostService {
 
   resetPostScreenList() {
     filteredPostList.value = postListByClassFromUser.value;
+  }
+
+  resetHomeScreenPostList(){
+    postListByClassFromUser.bindStream(
+        getPostStreamByClassFromUser());
   }
 
   void runPostFilter(DateTime d) {

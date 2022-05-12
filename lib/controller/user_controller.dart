@@ -11,13 +11,9 @@ import '../utils/constants.dart';
 class UserController extends GetxController {
 
   late Rx<User?> _user;
-  late final Rx<UserModel?> _localUser = const UserModel().obs;
-  late UserModel? _userModel = const UserModel();
 
   UserModel? get userModel => _userModel;
-
-  Rx<UserModel?> get localUser => _localUser;
-
+  late UserModel? _userModel = const UserModel();
   setUser(UserModel? value) => _userModel = value;
 
   @override

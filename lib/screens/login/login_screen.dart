@@ -54,13 +54,15 @@ class LoginScreen extends GetView<AuthController> {
                 ),
                 const BuildForgotPassBtn(),
                 const SizedBox(height: 40.0),
-                Obx(() => CustomBtn(
+                Obx(
+                  () => CustomBtn(
                     text: 'Acessar',
-                    function: auth.enableLoginButton() ? () => Get.to(() => CustomLoaderLogin(
-                        getData: auth.loginUser(),
-                      getBack: () => Get.to(() => const LoginScreen()),
-
-                    )) : () => auth.doNothing(),
+                    function: auth.enableLoginButton()
+                        ? () => Get.to(() => CustomLoaderLogin(
+                              getData: auth.loginUser(),
+                              getBack: () => Get.to(() => const LoginScreen()),
+                            ))
+                        : () => auth.doNothing(),
                   ),
                 ),
                 const SizedBox(height: 30.0),
@@ -84,5 +86,3 @@ class LoginScreen extends GetView<AuthController> {
     );
   }
 }
-
-

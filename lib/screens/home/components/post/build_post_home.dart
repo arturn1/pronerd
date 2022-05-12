@@ -33,8 +33,10 @@ class BuildPostHome extends GetView<PostController> {
         ),
         NotificationListener<ScrollEndNotification>(
           onNotification: onNotification,
-          child: StreamBuilder<List<PostModel>>(
+          child:
+          StreamBuilder<List<PostModel>>(
               stream: controller.getPostStreamByClassFromUser(),
+
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   if (!snapshot.hasData) {

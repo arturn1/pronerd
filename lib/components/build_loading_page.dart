@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:getwidget/types/gf_loader_type.dart';
-import 'package:pronerd/screens/login/login_screen.dart';
 
-import '../controller/auth_controller.dart';
-import '../controller/class_controller.dart';
-import '../controller/drop_down_controller.dart';
-import 'build_snack_bar.dart';
 
 class CustomLoader extends StatelessWidget {
   const CustomLoader(
@@ -24,9 +16,6 @@ class CustomLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthController auth = Get.find();
-    DropDownController dropDownController = Get.put(DropDownController());
-    ClassController classController = Get.put(ClassController());
 
     return Container(
         color: Colors.white,
@@ -41,13 +30,14 @@ class CustomLoader extends StatelessWidget {
                 if (snapshot.hasError) {
                   Future.delayed(Duration.zero, () async {
                     getBack();
-                     print('hasError');
                   });
                 }
             return const Center(
               child: GFLoader(
-                type: GFLoaderType.custom,
-                loaderIconOne   : Icon(Icons.upload_file, size: 50)
+                type: GFLoaderType.circle,
+                loaderColorOne: Colors.blue,
+                loaderColorTwo: Colors.blueAccent,
+                loaderColorThree: Colors.blue,
               ),
             );
           },

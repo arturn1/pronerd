@@ -13,7 +13,7 @@ import '../../models/room.dart';
 import '../../utils/constants.dart';
 import 'components/post/build_post_card_class.dart';
 
-class ClassFeed extends StatelessWidget {
+class ClassFeed extends GetView<ClassController> {
   const ClassFeed({Key? key, required this.roomModel}) : super(key: key);
 
   final RoomModel roomModel;
@@ -56,9 +56,9 @@ class ClassFeed extends StatelessWidget {
                           onPressed: () => {
                                 classController
                                     .followClass(roomModel.classId)
-                                    .then(
-                                      (value) => taskController.updateHome(),
-                                    )
+                                    // .then(
+                                      // (value) => taskController.updateHome(),
+
                               },
                           style: OutlinedButton.styleFrom(
                             elevation: 2,
@@ -81,8 +81,9 @@ class ClassFeed extends StatelessWidget {
                           horizontal: kMarginDefault / 2),
                       child: OutlinedButton(
                         onPressed: () => {
-                          classController.followClass(roomModel.classId).then(
-                                (value) => taskController.updateHome(),
+                          classController.followClass(roomModel.classId)
+                              .then(
+                                (value) => controller.updateHome(),
                               )
                         },
                         style: OutlinedButton.styleFrom(

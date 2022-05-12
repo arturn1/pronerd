@@ -77,18 +77,24 @@ class ConfirmScreen extends StatelessWidget {
                       ),
                       CustomBtn(
                         text: 'Salvar',
-                        function: () => postController.className.isNotEmpty ? {
-                          Get.to(() => CustomLoader(
-                              getData: postController.addPost(File(imagePath)),
-                              getBack: () => Get.offAll(const BaseScreen()),
-                              getTo: () =>
-                                  Get.offAll(() => const BaseScreen()))),
-                          Future.delayed(const Duration(milliseconds: 3000),
-                              () async {
-                            CustomSnack()
-                                .buildCardSuccess('Post salvo com sucesso');
-                          })
-                        } : CustomSnack().buildCardError('Selecione um grupo'),
+                        function: () => postController.className.isNotEmpty
+                            ? {
+                                Get.to(() => CustomLoader(
+                                    getData:
+                                        postController.addPost(File(imagePath)),
+                                    getBack: () =>
+                                        Get.offAll(const BaseScreen()),
+                                    getTo: () =>
+                                        Get.offAll(() => const BaseScreen()))),
+                                Future.delayed(
+                                    const Duration(milliseconds: 3000),
+                                    () async {
+                                  CustomSnack().buildCardSuccess(
+                                      'Post salvo com sucesso');
+                                })
+                              }
+                            : CustomSnack()
+                                .buildCardError('Selecione um grupo'),
                       )
                     ],
                   ),

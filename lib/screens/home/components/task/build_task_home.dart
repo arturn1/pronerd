@@ -40,7 +40,6 @@ class _BuildTaskHomeState extends State<BuildTaskHome>
     TaskController taskController = Get.find();
     UserController userController = Get.find();
 
-
     return SizedBox(
       height: 170,
       child: Column(
@@ -68,8 +67,8 @@ class _BuildTaskHomeState extends State<BuildTaskHome>
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   if (!snapshot.hasData) {
-                    taskController.taskListByClassFromUser
-                        .bindStream(taskController.taskStreamByClassFromUserT());
+                    taskController.taskListByClassFromUser.bindStream(
+                        taskController.getTaskStreamByClassFromUser());
                   }
                   return const Center(child: Text("Sem entregas pendentes"));
                 }
