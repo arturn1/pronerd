@@ -1,14 +1,13 @@
 import 'dart:io';
 
+import 'package:pronerd/controller/class_controller.dart';
 import 'package:pronerd/controller/image_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
 import 'package:pronerd/models/post.dart';
+import 'package:pronerd/models/user.dart';
 import 'package:pronerd/services/post_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
-
-import '../models/room.dart';
-
 
 class PostController extends GetxController with PostService {
 
@@ -48,9 +47,9 @@ class PostController extends GetxController with PostService {
     postListByClass.bindStream(getPostStreamByClass(snap));
   }
 
-  Future<void> onFollow() async {
-    postListByClassFromUser.bindStream(getPostStreamByClassFromUser());
-  }
+  // Future<void> onFollow() async {
+  //   postListByClassFromUser.bindStream(getPostStreamByClassFromUser());
+  // }
 
   Future<void> addPost(File file) async {
     try {
@@ -99,13 +98,20 @@ class PostController extends GetxController with PostService {
     }
   }
 
+  Future<List<PostModel>> futurePostStreamByClassFromUser(UserModel? userModel) async {
+    try{
+       return await futurePostStreamByClassFromUserFromDB(userModel);
+    }catch(e){
+      rethrow;
+    }
+  }
+
   resetPostScreenList() {
     filteredPostList.value = postListByClassFromUser.value;
   }
 
-  resetHomeScreenPostList(){
-    postListByClassFromUser.bindStream(
-        getPostStreamByClassFromUser());
+  resetHomeScreenPostList(UserModel? userModel) async {
+    return postListByClassFromUser.value = await futurePostStreamByClassFromUser(userModel);
   }
 
   void runPostFilter(DateTime d) {

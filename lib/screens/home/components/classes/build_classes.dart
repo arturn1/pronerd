@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:pronerd/components/build_btn.dart';
-import 'package:pronerd/controller/auth_controller.dart';
-import 'package:pronerd/controller/task_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
-import 'package:pronerd/test.dart';
 
 import '../../../../components/build_add_room.dart';
 import '../../../../controller/class_controller.dart';
-import '../../../../controller/profile_controller.dart';
-import '../../../../controller/search_controller.dart';
 import '../../../../utils/constants.dart';
 import '../../../search/search_screen.dart';
 import 'build_card_classes.dart';

@@ -79,13 +79,12 @@ class ConfirmScreen extends StatelessWidget {
                         text: 'Salvar',
                         function: () => postController.className.isNotEmpty
                             ? {
-                                Get.to(() => CustomLoader(
-                                    getData:
-                                        postController.addPost(File(imagePath)),
-                                    getBack: () =>
-                                        Get.offAll(const BaseScreen()),
-                                    getTo: () =>
-                                        Get.offAll(() => const BaseScreen()))),
+                                postController.addPost(File(imagePath)),
+                                Future.delayed(
+                                    const Duration(milliseconds: 300),
+                                    () async {
+                                  Get.offAll(const BaseScreen());
+                                }),
                                 Future.delayed(
                                     const Duration(milliseconds: 3000),
                                     () async {

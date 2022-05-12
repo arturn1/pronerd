@@ -111,8 +111,6 @@ class TaskController extends GetxController with TaskService {
     }
   }
 
-
-
   Future<void> deleteTask(String taskId) async {
     try {
       deleteTaskFromDB(taskId);

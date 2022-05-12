@@ -34,10 +34,10 @@ class SelectImageSourceSnack extends StatelessWidget {
                 children: [
                   const Padding(padding: EdgeInsets.only(left: 40)),
                   buildBtn('Galeria', Icons.add_photo_alternate,
-                      () => imageController.getFromGallery(context)),
+                      () => imageController.getFromCamera(context, 'gallery')),
                   const Spacer(),
                   buildBtn('Câmera', Icons.add_a_photo,
-                      () => imageController.getFromCamera(context)),
+                      () => imageController.getFromCamera(context, 'camera')),
                   const Spacer(),
                   buildBtn(
                     'Tarefa',

@@ -58,27 +58,28 @@ abstract class ClassService {
     return following;
   }
 
-  Future<void> followClassToDB(String classId, UserModel? user) async {
+  followClassToDB(String classId, UserModel? user) {
     try {
-      await firestore.collection('rooms').doc(classId).update({
+      firestore.collection('rooms').doc(classId).update({
         'followers': FieldValue.arrayUnion([user!.uid])
       });
 
-      await firestore.collection('users').doc(user.uid).update({
+      firestore.collection('users').doc(user.uid).update({
         'classes': FieldValue.arrayUnion([classId]),
       });
+
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> unfollowClassToDB(String classId, UserModel? user) async {
+  unfollowClassToDB(String classId, UserModel? user) {
     try {
-      await firestore.collection('rooms').doc(classId).update({
+      firestore.collection('rooms').doc(classId).update({
         'followers': FieldValue.arrayRemove([user!.uid])
       });
 
-      await firestore.collection('users').doc(user.uid).update({
+      firestore.collection('users').doc(user.uid).update({
         'classes': FieldValue.arrayRemove([classId]),
       });
     } catch (e) {

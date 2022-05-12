@@ -3,19 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:pronerd/components/build_header.dart';
-import 'package:pronerd/controller/auth_controller.dart';
 import 'package:pronerd/controller/search_controller.dart';
 import 'package:pronerd/controller/task_controller.dart';
 import 'package:pronerd/controller/user_controller.dart';
 
-import '../../components/build_filter_dialog.dart';
-import '../../components/build_search_field.dart';
-import '../../models/task.dart';
 import '../../utils/constants.dart';
 import 'components/build_custom_header_task_screen.dart';
 import 'components/build_screen_task_card.dart';
-import 'components/build_search_field.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({Key? key}) : super(key: key);

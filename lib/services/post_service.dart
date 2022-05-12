@@ -61,4 +61,20 @@ abstract class PostService {
       return retVal.reversed.toList();
     });
   }
+
+  Future<List<PostModel>> futurePostStreamByClassFromUserFromDB(UserModel? user) async {
+    return await firestore.collection("posts").get().then((QuerySnapshot query) async {
+      List<PostModel> retVal = [];
+      for (var element in query.docs) {
+        var postModel = (PostModel.fromSnap(element));
+        for (var c in user!.classes) {
+          if (c == postModel.classId) {
+            retVal.add(postModel);
+          }
+        }
+      }
+      retVal.sort((a, b) => a.datePublished.compareTo(b.datePublished));
+      return retVal.reversed.toList();
+    });
+  }
 }

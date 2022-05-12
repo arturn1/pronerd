@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:pronerd/controller/class_controller.dart';
 import 'package:pronerd/controller/page_controller.dart';
 import 'package:pronerd/controller/post_controller.dart';
 import 'package:pronerd/screens/home/components/post/build_post_card.dart';
@@ -15,6 +16,7 @@ class BuildPostHome extends GetView<PostController> {
 
   @override
   Widget build(BuildContext context) {
+    ClassController classController = Get.find();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,23 +35,22 @@ class BuildPostHome extends GetView<PostController> {
         ),
         NotificationListener<ScrollEndNotification>(
           onNotification: onNotification,
-          child:
-          StreamBuilder<List<PostModel>>(
-              stream: controller.getPostStreamByClassFromUser(),
-
+          child: StreamBuilder<List<PostModel>>(
+              stream: controller.postListByClassFromUser.stream,
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  if (!snapshot.hasData) {
-                    controller.postListByClassFromUser.bindStream(
-                        controller.getPostStreamByClassFromUser());
-                  }
-                  return const Center(
-                    child: GFLoader(
-                      type: GFLoaderType.ios,
-                    ),
-                  );
-                }
 
+                  classController
+                      .updateHome(controller.userController.userModel);
+
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: GFLoader(
+                        type: GFLoaderType.ios,
+                      ),
+                    );
+                  }
+                }
                 if (snapshot.data!.isEmpty) {
                   return Container(
                       padding: const EdgeInsets.all(kPaddingDefault * 2),

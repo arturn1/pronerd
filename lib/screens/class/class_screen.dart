@@ -53,13 +53,8 @@ class ClassFeed extends GetView<ClassController> {
                       margin: const EdgeInsets.symmetric(
                           horizontal: kMarginDefault / 2),
                       child: OutlinedButton(
-                          onPressed: () => {
-                                classController
-                                    .followClass(roomModel.classId)
-                                    // .then(
-                                      // (value) => taskController.updateHome(),
-
-                              },
+                          onPressed: () =>
+                              {classController.followClass(roomModel.classId)},
                           style: OutlinedButton.styleFrom(
                             elevation: 2,
                             backgroundColor: kSecondaryColorContainer90,
@@ -80,12 +75,8 @@ class ClassFeed extends GetView<ClassController> {
                       margin: const EdgeInsets.symmetric(
                           horizontal: kMarginDefault / 2),
                       child: OutlinedButton(
-                        onPressed: () => {
-                          classController.followClass(roomModel.classId)
-                              .then(
-                                (value) => controller.updateHome(),
-                              )
-                        },
+                        onPressed: () =>
+                            {classController.followClass(roomModel.classId)},
                         style: OutlinedButton.styleFrom(
                           elevation: 2,
                           backgroundColor: kOnSecondaryColorContainer10,
